@@ -9,47 +9,52 @@ import com.alsamei.soft.ui.InventoryActivity
 import com.alsamei.soft.ui.SalesActivity
 import com.alsamei.soft.ui.PurchasesActivity
 import com.alsamei.soft.ui.ReportsActivity
+import com.alsamei.soft.ui.AccountsActivity
 
 class MainActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
-        // تحميل الواجهة الرئيسية مباشرة بدون حماية
+        // 1. تحميل الواجهة الرئيسية (تأكد أن IDs الأزرار مطابقة لملف XML)
         setContentView(R.layout.activity_main)
 
-        // تفعيل الأزرار وربطها بالشاشات
+        // 2. تفعيل التنقل بين الشاشات
         setupNavigation()
         
-        // رسالة ترحيبية بسيطة عند الفتح
+        // 3. رسالة ترحيبية بسيطة
         Toast.makeText(this, "مرحباً بك في السامعي سوفت", Toast.LENGTH_SHORT).show()
     }
 
     private fun setupNavigation() {
-        // زر المخزن والحسابات
-        findViewById<Button>(R.id.btnAccounts).setOnClickListener {
+        // زر المخزن (الأصناف)
+        findViewById<Button>(R.id.btnInventory)?.setOnClickListener {
             startActivity(Intent(this, InventoryActivity::class.java))
         }
 
-        // زر فاتورة المبيعات
-        findViewById<Button>(R.id.btnSales).setOnClickListener {
+        // زر المبيعات (الفواتير)
+        findViewById<Button>(R.id.btnSales)?.setOnClickListener {
             startActivity(Intent(this, SalesActivity::class.java))
         }
 
-        // زر فاتورة المشتريات (التوريد)
-        findViewById<Button>(R.id.btnPurchase).setOnClickListener {
+        // زر المشتريات (التوريد)
+        findViewById<Button>(R.id.btnPurchase)?.setOnClickListener {
             startActivity(Intent(this, PurchasesActivity::class.java))
         }
 
-        // زر التقارير المالية والأرباح
-        findViewById<Button>(R.id.btnReports).setOnClickListener {
+        // زر التقارير (الأرباح والخسائر)
+        findViewById<Button>(R.id.btnReports)?.setOnClickListener {
             startActivity(Intent(this, ReportsActivity::class.java))
+        }
+
+        // زر كشوفات الحسابات (المالية التفصيلية)
+        findViewById<Button>(R.id.btnAccounts)?.setOnClickListener {
+            startActivity(Intent(this, AccountsActivity::class.java))
         }
     }
 
-    // تذكير للمستخدم عند الضغط على زر الرجوع لإغلاق التطبيق
+    // إغلاق التطبيق بالكامل عند الضغط على زر الرجوع من الشاشة الرئيسية
     override fun onBackPressed() {
-        super.onBackPressed()
-        finishAffinity() // إغلاق كافة الأنشطة والخروج من التطبيق
+        finishAffinity() 
     }
 }
