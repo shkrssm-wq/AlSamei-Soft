@@ -9,6 +9,7 @@ import com.alsamei.soft.database.DatabaseHelper
 import com.alsamei.soft.ui.InventoryActivity
 import com.alsamei.soft.ui.SalesActivity
 import com.alsamei.soft.ui.PurchasesActivity
+import com.alsamei.soft.ui.ReportsActivity
 import com.alsamei.soft.ui.SetupActivity
 
 class MainActivity : Activity() {
@@ -16,53 +17,54 @@ class MainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // 1. فحص الأمان: هل تم إعداد حساب المدير؟
+        // 1. نظام الحماية: التحقق من وجود المدير عند كل تشغيل
         if (!isAdminCreated()) {
             val intent = Intent(this, SetupActivity::class.java)
             startActivity(intent)
-            finish() 
+            finish() // منع المستخدم من العودة لهذه الشاشة
             return
         }
 
-        // 2. تحميل الواجهة الرئيسية (Dashboard)
+        // 2. تحميل لوحة التحكم الرئيسية
         setContentView(R.layout.activity_main)
 
-        // 3. تفعيل زر "إدارة المخزون / الحسابات"
+        // 3. ربط وتفعيل أزرار النظام الأربعة
+        
+        // زر المخزون والحسابات
         findViewById<Button>(R.id.btnAccounts).setOnClickListener {
-            val intent = Intent(this, InventoryActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, InventoryActivity::class.java))
         }
 
-        // 4. تفعيل زر "فاتورة المبيعات"
+        // زر فاتورة المبيعات
         findViewById<Button>(R.id.btnSales).setOnClickListener {
-            val intent = Intent(this, SalesActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, SalesActivity::class.java))
         }
 
-        // 5. تفعيل زر "فاتورة المشتريات / التوريد" ✅
+        // زر فاتورة المشتريات (التوريد)
         findViewById<Button>(R.id.btnPurchase).setOnClickListener {
-            val intent = Intent(this, PurchasesActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, PurchasesActivity::class.java))
         }
 
-        // 6. زر التقارير (سيتم تفعيله في المرحلة القادمة)
+        // زر التقارير المالية والأرباح
         findViewById<Button>(R.id.btnReports).setOnClickListener {
-            Toast.makeText(this, "قيد البرمجة: جاري تجهيز تقارير الأرباح والخسائر", Toast.LENGTH_SHORT).show()
-             // startActivity(Intent(this, ReportsActivity::class.java))
+            startActivity(Intent(this, ReportsActivity::class.java))
         }
+        
+        // رسالة ترحيب ذكية
+        Toast.makeText(this, "مرحباً بك في السامعي سوفت", Toast.LENGTH_SHORT).show()
     }
 
     /**
-     * دالة للتحقق من وجود مستخدم بصلاحية مدير في قاعدة البيانات
+     * وظيفة للتحقق من قاعدة البيانات: هل تم إعداد النظام لأول مرة؟
      */
     private fun isAdminCreated(): Boolean {
         return try {
             val dbHelper = DatabaseHelper(this)
             val db = dbHelper.readableDatabase
             val cursor = db.rawQuery("SELECT * FROM users WHERE role = 'ADMIN'", null)
-            val exists = cursor.count > 0
+            val count = cursor.count
             cursor.close()
-            exists
+            count > 0
         } catch (e: Exception) {
             false
         }
