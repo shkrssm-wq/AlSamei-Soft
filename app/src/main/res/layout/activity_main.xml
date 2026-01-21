@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
+
+    <View android:layout_width="match_parent" android:layout_height="150dp" android:background="#1A237E"/>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:padding="16dp"
+        android:layout_marginTop="-50dp">
+
+        <Button android:id="@+id/btnSales" android:text="المبيعات" android:layout_width="0dp" android:layout_height="120dp" android:layout_columnWeight="1" android:layout_margin="8dp" android:backgroundTint="#4CAF50"/>
+        <Button android:id="@+id/btnPurchase" android:text="المشتريات" android:layout_width="0dp" android:layout_height="120dp" android:layout_columnWeight="1" android:layout_margin="8dp" android:backgroundTint="#2196F3"/>
+        <Button android:id="@+id/btnAccounts" android:text="الحسابات" android:layout_width="0dp" android:layout_height="120dp" android:layout_columnWeight="1" android:layout_margin="8dp" android:backgroundTint="#FF9800"/>
+        <Button android:id="@+id/btnReports" android:text="التقارير" android:layout_width="0dp" android:layout_height="120dp" android:layout_columnWeight="1" android:layout_margin="8dp" android:backgroundTint="#9C27B0"/>
+    </GridLayout>
+</LinearLayout>
