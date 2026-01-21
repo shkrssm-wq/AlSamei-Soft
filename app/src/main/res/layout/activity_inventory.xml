@@ -1,72 +1,59 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:padding="15dp"
     android:background="#FFFFFF">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="إضافة صنف جديد"
-        android:textSize="20sp"
+        android:text="إدارة المخزن"
+        android:textSize="22sp"
         android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="#3F51B5"
+        android:layout_marginBottom="15dp"/>
+
+    <EditText
+        android:id="@+id/etSearchItem"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="بحث عن صنف..."
         android:gravity="right"
-        android:layout_marginBottom="16dp"/>
+        android:padding="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/edittext_bg"/>
 
     <EditText
         android:id="@+id/etItemName"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:hint="اسم الصنف"
+        android:hint="اسم الصنف الجديد"
         android:gravity="right"
         android:background="@drawable/edittext_bg"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginBottom="10dp"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        
-        <EditText
-            android:id="@+id/etItemPrice"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:hint="السعر"
-            android:inputType="numberDecimal"
-            android:background="@drawable/edittext_bg"
-            android:layout_marginRight="4dp"/>
-
-        <EditText
-            android:id="@+id/etItemQty"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:hint="الكمية"
-            android:inputType="number"
-            android:background="@drawable/edittext_bg"
-            android:layout_marginLeft="4dp"/>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+        <EditText android:id="@+id/etItemPrice" android:layout_width="0dp" android:layout_height="50dp" android:layout_weight="1" android:hint="سعر البيع" android:inputType="numberDecimal" android:background="@drawable/edittext_bg" android:layout_marginRight="5dp"/>
+        <EditText android:id="@+id/etItemQty" android:layout_width="0dp" android:layout_height="50dp" android:layout_weight="1" android:hint="الكمية الافتتاحية" android:inputType="number" android:background="@drawable/edittext_bg" android:layout_marginLeft="5dp"/>
     </LinearLayout>
 
     <Button
         android:id="@+id/btnAddItem"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:text="حفظ الصنف"
-        android:backgroundTint="#4CAF50"
-        android:layout_marginTop="16dp"/>
+        android:text="إضافة صنف للمخزن"
+        android:backgroundTint="#3F51B5"
+        android:textColor="#FFF"
+        android:layout_marginTop="15dp"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#DDDDDD"
-        android:layout_marginVertical="16dp"/>
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="قائمة الأصناف المتاحة:" android:layout_marginTop="15dp" android:gravity="right" android:textStyle="bold"/>
 
     <ListView
         android:id="@+id/lvItems"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"/>
 
 </LinearLayout>
