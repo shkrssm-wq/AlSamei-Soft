@@ -2,7 +2,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="#FFFFFF">
 
     <TextView
         android:layout_width="match_parent"
@@ -11,11 +12,19 @@
         android:textSize="20sp"
         android:gravity="center"
         android:textStyle="bold"
+        android:textColor="#1A237E"
         android:layout_marginBottom="10dp"/>
 
     <Spinner android:id="@+id/spAllAccounts" android:layout_width="match_parent" android:layout_height="50dp" android:background="@drawable/edittext_bg"/>
 
-    <TextView android:id="@+id/tvCurrentBalance" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="الرصيد الحالي: 0.0" android:textSize="18sp" android:textColor="#D32F2F" android:layout_marginVertical="10dp" android:gravity="right"/>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="10dp">
+        <EditText android:id="@+id/etEndDate" android:layout_width="0dp" android:layout_height="50dp" android:layout_weight="1" android:hint="إلى تاريخ (yyyy-mm-dd)" android:textSize="12sp" android:background="@drawable/edittext_bg" android:layout_marginLeft="5dp"/>
+        <EditText android:id="@+id/etStartDate" android:layout_width="0dp" android:layout_height="50dp" android:layout_weight="1" android:hint="من تاريخ (yyyy-mm-dd)" android:textSize="12sp" android:background="@drawable/edittext_bg" android:layout_marginRight="5dp"/>
+    </LinearLayout>
+
+    <Button android:id="@+id/btnFilterDate" android:layout_width="match_parent" android:layout_height="50dp" android:text="تحديث الكشف" android:layout_marginTop="5dp" android:backgroundTint="#1A237E" android:textColor="#FFF"/>
+
+    <TextView android:id="@+id/tvCurrentBalance" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="الرصيد: 0.0" android:textSize="18sp" android:textColor="#D32F2F" android:layout_marginVertical="10dp" android:gravity="right" android:textStyle="bold"/>
 
     <ListView android:id="@+id/lvJournalEntries" android:layout_width="match_parent" android:layout_height="match_parent" />
 
