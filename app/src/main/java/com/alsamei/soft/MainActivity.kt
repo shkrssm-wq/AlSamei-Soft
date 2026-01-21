@@ -4,47 +4,87 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import com.alsamei.soft.database.DatabaseHelper
 import com.alsamei.soft.ui.*
 
 class MainActivity : Activity() {
 
+    // تعريف dbHelper على مستوى الكلاس لاستخدامه بكفاءة
+    private lateinit var dbHelper: DatabaseHelper
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        dbHelper = DatabaseHelper(this)
 
-        // التحقق من وجود المدير
+        // 1. فحص الأمان الشامل
         if (!isAdminCreated()) {
-            startActivity(Intent(this, SetupActivity::class.java))
-            finish()
+            navigateTo(SetupActivity::class.java)
+            finish() 
             return
         }
 
+        // 2. تحميل الواجهة الرئيسية
         setContentView(R.layout.activity_main)
 
-        // ربط جميع الأزرار الأربعة بواجهاتها البرمجية
+        // 3. تفعيل وربط الأزرار مع معالجة الأخطاء
+        setupButtons()
+    }
+
+    private fun setupButtons() {
+        // زر الحسابات والمخزون
         findViewById<Button>(R.id.btnAccounts).setOnClickListener {
-            startActivity(Intent(this, InventoryActivity::class.java)) // إدارة المخزن
+            navigateTo(InventoryActivity::class.java)
         }
 
+        // زر فاتورة المبيعات
         findViewById<Button>(R.id.btnSales).setOnClickListener {
-            startActivity(Intent(this, SalesActivity::class.java)) // المبيعات
+            navigateTo(SalesActivity::class.java)
         }
 
+        // زر فاتورة المشتريات
         findViewById<Button>(R.id.btnPurchase).setOnClickListener {
-            startActivity(Intent(this, PurchasesActivity::class.java)) // المشتريات
+            navigateTo(PurchasesActivity::class.java)
         }
 
+        // زر التقارير والأرباح
         findViewById<Button>(R.id.btnReports).setOnClickListener {
-            startActivity(Intent(this, ReportsActivity::class.java)) // التقارير والأرباح
+            navigateTo(ReportsActivity::class.java)
         }
     }
 
+    /**
+     * دالة موحدة للانتقال بين الشاشات مع رسالة خطأ في حال الفشل
+     */
+    private fun navigateTo(destination: Class<*>) {
+        try {
+            val intent = Intent(this, destination)
+            startActivity(intent)
+        } catch (e: Exception) {
+            Toast.makeText(this, "عذراً، تعذر فتح الشاشة المطلوبة", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * التحقق من وجود حساب المدير في قاعدة البيانات
+     */
     private fun isAdminCreated(): Boolean {
-        val dbHelper = DatabaseHelper(this)
+        var exists = false
         val db = dbHelper.readableDatabase
-        val cursor = db.rawQuery("SELECT * FROM users WHERE role = 'ADMIN'", null)
-        val exists = cursor.count > 0
-        cursor.close()
+        try {
+            val cursor = db.rawQuery("SELECT 1 FROM users WHERE role = 'ADMIN' LIMIT 1", null)
+            exists = cursor.count > 0
+            cursor.close()
+        } catch (e: Exception) {
+            exists = false
+        }
         return exists
+    }
+
+    // إغلاق قاعدة البيانات عند إغلاق التطبيق نهائياً
+    override fun onDestroy() {
+        dbHelper.close()
+        super.onDestroy()
     }
 }
