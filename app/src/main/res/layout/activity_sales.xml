@@ -1,0 +1,56 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp"
+    android:background="#FFFFFF">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="فاتورة مبيعات جديدة"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:gravity="right"
+        android:textColor="#2E7D32"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="اختر الصنف:" android:gravity="right"/>
+    <Spinner
+        android:id="@+id/spItems"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/edittext_bg"/>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+        <EditText
+            android:id="@+id/etSalePrice"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_weight="1"
+            android:hint="سعر البيع"
+            android:inputType="numberDecimal"
+            android:background="@drawable/edittext_bg"
+            android:layout_marginRight="5dp"/>
+        <EditText
+            android:id="@+id/etSaleQty"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_weight="1"
+            android:hint="الكمية"
+            android:inputType="number"
+            android:background="@drawable/edittext_bg"
+            android:layout_marginLeft="5dp"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnSaveSale"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="حفظ وتخصم من المخزون"
+        android:backgroundTint="#2E7D32"
+        android:textColor="#FFF"
+        android:layout_marginTop="20dp"/>
+
+</LinearLayout>
