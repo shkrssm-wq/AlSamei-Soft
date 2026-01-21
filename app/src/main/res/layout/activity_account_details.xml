@@ -1,0 +1,22 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="كشف حساب تفصيلي"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dp"/>
+
+    <Spinner android:id="@+id/spAllAccounts" android:layout_width="match_parent" android:layout_height="50dp" android:background="@drawable/edittext_bg"/>
+
+    <TextView android:id="@+id/tvCurrentBalance" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="الرصيد الحالي: 0.0" android:textSize="18sp" android:textColor="#D32F2F" android:layout_marginVertical="10dp" android:gravity="right"/>
+
+    <ListView android:id="@+id/lvJournalEntries" android:layout_width="match_parent" android:layout_height="match_parent" />
+
+</LinearLayout>
