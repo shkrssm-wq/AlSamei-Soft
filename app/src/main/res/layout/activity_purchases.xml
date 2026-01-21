@@ -1,0 +1,32 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="فاتورة مشتريات (توريد)"
+        android:textSize="22sp"
+        android:gravity="right"
+        android:textColor="#1565C0"
+        android:layout_marginBottom="20dp"/>
+
+    <Spinner android:id="@+id/spSuppliers" android:layout_width="match_parent" android:layout_height="50dp" android:background="@drawable/edittext_bg" android:layout_marginBottom="10dp"/>
+
+    <Spinner android:id="@+id/spItemsPurchase" android:layout_width="match_parent" android:layout_height="50dp" android:background="@drawable/edittext_bg" android:layout_marginBottom="10dp"/>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+        <EditText android:id="@+id/etPurchaseCost" android:layout_width="0dp" android:layout_height="55dp" android:layout_weight="1" android:hint="تكلفة الشراء" android:inputType="numberDecimal" android:background="@drawable/edittext_bg" android:layout_marginRight="5dp"/>
+        <EditText android:id="@+id/etPurchaseQty" android:layout_width="0dp" android:layout_height="55dp" android:layout_weight="1" android:hint="الكمية" android:inputType="number" android:background="@drawable/edittext_bg" android:layout_marginLeft="5dp"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnSavePurchase"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="حفظ وتوريد للمخزن"
+        android:backgroundTint="#1565C0"
+        android:layout_marginTop="20dp"/>
+</LinearLayout>
