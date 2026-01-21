@@ -5,66 +5,80 @@ import android.os.Bundle
 import android.widget.*
 import com.alsamei.soft.R
 import com.alsamei.soft.database.DatabaseHelper
+import java.util.*
 
 class AccountsActivity : Activity() {
+
+    private lateinit var dbHelper: DatabaseHelper
+    private lateinit var spAcc: Spinner
+    private lateinit var etStart: EditText
+    private lateinit var etEnd: EditText
+    private lateinit var lvJournal: ListView
+    private lateinit var tvBal: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account_details)
 
-        val spAcc = findViewById<Spinner>(R.id.spAllAccounts)
-        val lvJournal = findViewById<ListView>(R.id.lvJournalEntries)
-        val tvBal = findViewById<TextView>(R.id.tvCurrentBalance)
-        
-        val dbHelper = DatabaseHelper(this)
+        dbHelper = DatabaseHelper(this)
+        spAcc = findViewById(R.id.spAllAccounts)
+        etStart = findViewById(R.id.etStartDate)
+        etEnd = findViewById(R.id.etEndDate)
+        lvJournal = findViewById(R.id.lvJournalEntries)
+        tvBal = findViewById(R.id.tvCurrentBalance)
+        val btnFilter = findViewById<Button>(R.id.btnFilterDate)
 
-        // 1. تحميل كافة الحسابات (صندوق، مبيعات، موردين...)
-        val accMap = loadAccounts(spAcc, dbHelper)
+        val accMap = loadAccounts()
 
-        spAcc.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, p1: android.view.View?, p2: Int, p3: Long) {
-                val accName = spAcc.selectedItem.toString()
-                val accId = accMap[accName] ?: -1
-                showJournalEntries(accId, lvJournal, tvBal, dbHelper)
-            }
-            override fun onNothingSelected(p0: AdapterView<*>?) {}
+        btnFilter.setOnClickListener {
+            val accId = accMap[spAcc.selectedItem.toString()] ?: -1
+            val startDate = etStart.text.toString().ifEmpty { "2000-01-01" }
+            val endDate = etEnd.text.toString().ifEmpty { "2100-12-31" }
+            updateStatement(accId, startDate, endDate)
         }
     }
 
-    private fun showJournalEntries(id: Int, lv: ListView, tv: TextView, dbHelper: DatabaseHelper) {
+    private fun updateStatement(accId: Int, start: String, end: String) {
         val db = dbHelper.readableDatabase
         val entries = mutableListOf<String>()
         
-        // جلب القيود حيث يكون الحساب مديناً (+) أو دائناً (-)
+        // استعلام يبحث في القيود ضمن نطاق التاريخ المحدد
         val cursor = db.rawQuery("""
-            SELECT description, amount, 
-            CASE WHEN debit_acc = ? THEN 'مدين (+)' ELSE 'دائن (-)' END as type 
-            FROM journal WHERE debit_acc = ? OR credit_acc = ?
-        """, arrayOf(id.toString(), id.toString(), id.toString()))
+            SELECT e.description, d.debit, d.credit, e.entry_date 
+            FROM journal_details d 
+            JOIN journal_entries e ON d.entry_id = e.entry_id 
+            WHERE d.acc_id = ? AND date(e.entry_date) BETWEEN ? AND ?
+            ORDER BY e.entry_date ASC
+        """, arrayOf(accId.toString(), start, end))
 
-        var total = 0.0
+        var runningBalance = 0.0
         while (cursor.moveToNext()) {
             val desc = cursor.getString(0)
-            val amt = cursor.getDouble(1)
-            val type = cursor.getString(2)
-            entries.add("$desc | $amt | $type")
-            if (type.contains("مدين")) total += amt else total -= amt
+            val deb = cursor.getDouble(1)
+            val cre = cursor.getDouble(2)
+            val date = cursor.getString(3).substring(0, 10) // جلب التاريخ فقط بدون الوقت
+            
+            runningBalance += (deb - cre)
+            entries.add("$date | $desc\nمدين: $deb | دائن: $cre | الرصيد: $runningBalance")
         }
         cursor.close()
-        lv.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, entries)
-        tv.text = "الرصيد النهائي: $total"
+        
+        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, entries)
+        lvJournal.adapter = adapter
+        tvBal.text = "الرصيد الإجمالي للفترة: $runningBalance"
     }
 
-    private fun loadAccounts(spinner: Spinner, dbHelper: DatabaseHelper): Map<String, Int> {
+    private fun loadAccounts(): Map<String, Int> {
         val db = dbHelper.readableDatabase
-        val cursor = db.rawQuery("SELECT acc_id, acc_name FROM accounts", null)
         val map = mutableMapOf<String, Int>()
         val list = mutableListOf<String>()
+        val cursor = db.rawQuery("SELECT acc_id, acc_name FROM accounts", null)
         while (cursor.moveToNext()) {
             map[cursor.getString(1)] = cursor.getInt(0)
             list.add(cursor.getString(1))
         }
         cursor.close()
-        spinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, list)
+        spAcc.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, list)
         return map
     }
 }
